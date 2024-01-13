@@ -40,9 +40,9 @@ def miller_rabin_primality_test(num: int):
 
 
 mr_times = timeit.repeat(lambda: miller_rabin_primality_test(random.randrange(3, 10000000000000000, 2)), repeat=100,
-                         number=100)
+                         number=10)
 normal_times = timeit.repeat(lambda: normal_prime_test(random.randrange(3, 10000000000000000, 2)), repeat=100,
-                             number=100)
+                             number=10)
 
 plt.title('Miller Rabin Primality vs Normal Prime Test')
 plt.xlabel('No of Times')
