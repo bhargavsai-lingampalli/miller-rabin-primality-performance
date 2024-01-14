@@ -14,29 +14,34 @@ def normal_prime_test(num: int):
     return True
 
 
-def return_m(num: int):
-    k = 0
-    while num % 2 == 0:
-        k += 1
-        num >>= 1
+def single_test(a, n, m):
+    if pow(a, m, n) == 1:
+        return True
 
-    return k, num
-
-
-def miller_rabin_primality_test(num: int):
-    if num % 2 == 0:
-        return False if num != 2 else True
-
-    k, m = return_m(num - 1)
-    a = random.randint(2, num - 2)
-    b = pow(a, m, num)
-
-    if b == 1 or b == num - 1: return True
-    for i in range(k):
-        b = pow(b, 2, num)
-        if b == num - 1: return True
+    while m < n - 1:
+        if pow(a, m, n) == n - 1:
+            return True
+        m <<= 1
 
     return False
+
+
+def miller_rabin_primality_test(num, k=40):
+    if num == 2 or num == 3:
+        return True
+    if num < 2 or num % 2 == 0:
+        return False
+
+    m = num - 1
+    while m % 2 == 0:
+        m >>= 1
+
+    for _ in range(k):
+        a = random.randint(2, num - 2)
+        if not single_test(a, num, m):
+            return False
+
+    return True
 
 
 mr_times = timeit.repeat(lambda: miller_rabin_primality_test(random.randrange(3, 10000000000000000, 2)), repeat=100,
